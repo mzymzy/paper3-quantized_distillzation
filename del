@@ -1,0 +1,2 @@
+rm -f *.tst
+rm -rf ./models/cifar10
