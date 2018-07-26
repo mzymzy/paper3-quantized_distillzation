@@ -77,7 +77,7 @@ class ScalingFunction(object):
 
         self.original_tensor_size = tensor.size() # torch的size返回一个元组操作 (4,5)
         self.original_tensor_length = tensor.numel() # numel 返回所有的元素数目，相当于把size所有的数字进行累乘操作
-        tensor = qhf.create_bucket_tensor(tensor, self.bucket_size, fill_values='last')
+        tensor = qhf.create_bucket_tensor(tensor, self.bucket_size, fill_values='last') #
         if self.bucket_size is None:
             tensor = tensor.view(-1)
         self.expected_tensor_size = tensor.size()

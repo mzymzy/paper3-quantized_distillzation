@@ -71,16 +71,17 @@ def create_bucket_tensor(tensor, bucket_size, fill_values='last'):
 
     tensor = tensor.view(-1)
     if fill_values == 'nan':
-        fill_values = float('nan')
+        fill_values = float('nan') # not a number ,和inf'一样代表了特殊的数字含义，意义是错误的数字
     if fill_values == 'last':
-        fill_values = tensor[-1]
+        fill_values = tensor[-1] # 补齐的时候就将tensor的最后一维进行收集处理
 
-    total_length = tensor.numel()
-    multiple, rest = divmod(total_length, bucket_size)
+    total_length = tensor.numel() # tensor 的数目是整个tensor中含有不的所有元素的数目
+    multiple, rest = divmod(total_length, bucket_size) # 除法，得到相应的商以及余数
     if multiple != 0 and rest != 0:
+
         #if multiple is 0, the num of elements is smaller than bucket size so we operate directly
         #on the tensor passed
-        values_to_add = torch.ones(bucket_size-rest)*fill_values
+        values_to_add = torch.ones(bucket_size-rest)*fill_values # ones得到一个全部元素都是1的tensor，再乘以要补全的元素就可以
         values_to_add = values_to_add.cuda() if tensor.is_cuda else values_to_add
         # add the fill_values to make the tensor a multiple of the bucket size.
         tensor = torch.cat([tensor, values_to_add])
